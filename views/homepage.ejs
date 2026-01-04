@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <head>
+    <title> speed</title>
+    <link rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧋</text></svg>">
+    <link rel="stylesheet" href="css/homepage.css">
+  </head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <!-- 左側導覽列 -->
+        <li id="welcome-msg"></li>
+        <li><a href="/homepage" class="active">首頁</a></li>
+        <li><a href="/menu">菜單</a></li>
+        <li><a href="/order">線上訂購</a></li>
+        <li><a href="/storepage">門市據點</a></li>
+        <li><a href="/brandStory">品牌故事</a></li>
+        <li><a href="/frequentlyaskedquestions">常見問題</a></li>
+
+        <% if (user) { %>
+          <li><a onclick="return false;">歡迎 <%= user.username %></a></li>
+          <li><a href="/logout">登出</a></li>
+          <% } else { %>
+            <li><a href="/login">登入</a></li>
+            <% } %>
+      </ul>
+      <!-- 手機版漢堡選單 -->
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+  <svg width="100vw" height="100vh" viewBox="0 0 1200 400"
+    xmlns="http://www.w3.org/2000/svg"><!-- 這是 XML 命名空間的宣告。 它告訴瀏覽器：「我這段程式碼是 SVG，不是 HTML 或其他語言。」-->
+    <defs> <!-- 想像你有一個圖形要用很多次，你不想每次都重複畫，就可以定義一次、使用多次。-->
+      <clipPath id="cup-clip"> <!--如果你刪掉 <clipPath> 裡的矩形會怎樣？會失去裁剪效果（被裁剪的圖形會全部顯示，沒有遮擋範圍限制）。 -->
+        <rect x="-40" y="-80" width="80" height="160" rx="15" ry="15" />
+      </clipPath>
+
+      <g id="small-cup"> <!-- 是 group（群組） 的意思，用來把多個圖形元素包在一起。 -->
+        <rect x="20" y="0" width="80" height="160" rx="15" ry="15" fill="#F3E5C2" stroke="#5C4632" stroke-width="2" />
+        <circle cx="45" cy="140" r="7" fill="#4E3629" />
+        <ellipse cx="60" cy="0" rx="40" ry="8" fill="none" stroke="" stroke-width="2" />
+      </g>
+      <rect x="55" y="-40" width="10" height="30" rx="3" fill="none" stroke="#5C4632" stroke-width="2" />
+
+      <g id="grapes" transform="translate(0,0)">
+        <circle cx="0" cy="0" r="10" fill="#6A1B9A" stroke="#4A0072" stroke-width="1" />
+        <circle cx="12" cy="8" r="9" fill="#7B1FA2" stroke="#5E2390" stroke-width="1" />
+        <circle cx="-10" cy="10" r="8" fill="#8E24AA" stroke="#682E9E" stroke-width="1" />
+        <circle cx="10" cy="20" r="7" fill="#9C27B0" stroke="#7B1FA2" stroke-width="1" />
+        <circle cx="0" cy="30" r="9" fill="#7B1FA2" stroke="#5E2390" stroke-width="1" />
+        <circle cx="-8" cy="20" r="8" fill="#6A1B9A" stroke="#4A0072" stroke-width="1" />
+
+        <path d="M -10 -10 C -20 -30, 0 -40 ,10 -30" fill="#2E7D32" />
+        <!--Cubic Bezier Curve（立方貝茲曲線）它用來畫一條平滑的彎曲線，透過兩個控制點控制彎曲的路徑。 -->
+      </g>
+
+      <g id="lemon-slice">
+        <ellipse cx="0" cy="0" rx="18" ry="30" fill="#FFEB3B" stroke="#FDD835" stroke-width="2" />
+        <path d="M 0 0 L 0 -30" stroke="#FBC02D" stroke-width="2" />
+        <path d="M 0 0 L 15 -26" stroke="#FBC02D" stroke-width="2" />
+        <path d="M 0 0 L -15 -26" stroke="#FBC02D" stroke-width="2" />
+        <path d="M 0 0 L 12 20" stroke="#FBC02D" stroke-width="2" />
+        <path d="M 0 0 L -12 20" stroke="#FBC02D" stroke-width="2" />
+        <circle cx="0" cy="0" r="5" fill="#000" />
+      </g>
+
+      <g id="banana" transform="scale(1)">
+        <ellipse cx="0" cy="0" rx="8" ry="60" fill="#FFEB3B" stroke="#FBC02D" stroke-width="2" />
+        <path d="M -8 -25 C -15 -20, -12 10, 0 30" fill="none" stroke="#FBC02D" stroke-width="3" />
+        <path d="M 8 -20 C 14 -15, 10 10, 0 30" fill="none" stroke="#FBC02D" stroke-width="3" />
+        <ellipse cx="0" cy="26" rx="5" ry="12" fill="url(#banana-shadow)" />
+      </g>
+
+      <radialGradient id="banana-shadow" cx=0.5 cy="0.5" r="0.6">
+        <!-- 中心點在漸層框的「50% 水平、50% 垂直」→ 就是中間 ，漸層的半徑是「60% 的寬度」→ 漸層擴散範圍比較集中在中間，不會擴到整個物件邊界-->
+        <stop offset="0%" stop-color="#FDD835" opacity="0.6" />
+        <stop offset="100%" stop-color="#FFEB3B" opacity="0" />
+      </radialGradient>
+
+      <g id="watermelon-slice" transform="scale(1)">
+        <ellipse cx="0" cy="0" rx="35" ry="20" fill="#A5D6A7" stroke="#D32F2F" stroke-width="3" />
+        <ellipse cx="0" cy="0" rx="30" ry="15" fill="#F44336" stroke="#D32F2F" stroke-width="3" />
+        <circle cx="-10" cy="0" r="3" fill="#4E3629" />
+        <circle cx="0" cy="7" r="3" fill="#4E3629" />
+        <circle cx="10" cy="-5" r="3" fill="#4E3629" />
+        <circle cx="15" cy="5" r="2" fill="#4E3629" />
+        <circle cx="-15" cy="5" r="2" fill="#4E3629" />
+      </g>
+    </defs>
+
+    <!-- 大杯珍珠奶茶 -->
+    <g transform="translate(650, 250) scale(1.5)">
+      <rect x="-40" y="80" width="80" height="0" fill="#F3E5C2" clip-path="url(#cup-clip)">
+        <!-- 你會看到「飲料」的長方形動畫，只會在杯子的形狀裡出現 -->
+        <animate attributeName="height" from="0" to="160" dur="2s" begin="0s" fill="freeze" />
+        <!-- fill="freeze" 是在說動畫「完成之後，結果要不要保留？」freeze → 動畫結束後保持「最後的狀態」-->
+        <animate attributeName="y" from="80" to="-80" dur="2s" begin="0s" fill="freeze" />
+      </rect>
+      <g clip-path="url(#cup-clip)">
+        <!-- 珍珠 -->
+        <circle cx="-25" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="-60" dur="1.5s" begin="0s" fill="freeze" />
+        </circle>
+        <circle cx="-15" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="-40" dur="1.5s" begin="0.3s" fill="freeze" />
+        </circle>
+        <circle cx="-5" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="0" dur="1.5s" begin="0.5s" fill="freeze" />
+        </circle>
+        <circle cx="5" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="30" dur="1.5s" begin="0.8s" fill="freeze" />
+        </circle>
+        <circle cx="15" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="60" dur="1.5s" begin="1.0s" fill="freeze" />
+        </circle>
+        <circle cx="-20" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="40" dur="1.5s" begin="1.2s" fill="freeze" />
+        </circle>
+        <circle cx="10" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="10" dur="1.5s" begin="1.5s" fill="freeze" />
+        </circle>
+        <circle cx="-10" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="-5" dur="1.5s" begin="1.7s" fill="freeze" />
+        </circle>
+
+        <!-- 椰果 -->
+        <rect x="-18" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="30" dur="1.5s" begin="0.6s" fill="freeze" />
+        </rect>
+        <rect x="0" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="10" dur="1.5s" begin="1.4s" fill="freeze" />
+        </rect>
+        <rect x="-10" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="15" dur="1.5s" begin="1.9s" fill="freeze" />
+        </rect>
+        <rect x="5" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="35" dur="1.5s" begin="2.2s" fill="freeze" />
+        </rect>
+        <rect x="15" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="50" dur="1.5s" begin="2.5s" fill="freeze" />
+        </rect>
+        <rect x="-25" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-40" dur="1.5s" begin="0.8s" fill="freeze" />
+        </rect>
+        <rect x="20" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-30" dur="1.5s" begin="1.6s" fill="freeze" />
+        </rect>
+        <rect x="-5" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-45" dur="1.5s" begin="2.1s" fill="freeze" />
+        </rect>
+        <rect x="10" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-35" dur="1.5s" begin="2.6s" fill="freeze" />
+        </rect>
+        <rect x="-15" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-50" dur="1.5s" begin="2.9s" fill="freeze" />
+        </rect>
+
+        <!-- 仙草 -->
+        <rect x="10" y="80" width="7" height="7" fill="#3B3B3B">
+          <animate attributeName="y" from="-80" to="10" dur="1.5s" begin="0.7s" fill="freeze" />
+        </rect>
+        <rect x="-12" y="-80" width="7" height="7" fill="#3B3B3B">
+          <animate attributeName="y" from="-80" to="35" dur="1.5s" begin="1.6s" fill="freeze" />
+        </rect>
+        <rect x="-5" y="-80" width="7" height="7" fill="#3B3B3B">
+          <animate attributeName="y" from="-80" to="20" dur="1.5s" begin="2.3s" fill="freeze" />
+        </rect>
+        <rect x="15" y="-80" width="7" height="7" fill="#3B3B3B">
+          <animate attributeName="y" from="-80" to="15" dur="1.5s" begin="2.5s" fill="freeze" />
+        </rect>
+
+        <!-- 布丁 -->
+        <ellipse cx="-2" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="5" dur="1.5s" begin="1.8s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="8" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-10" dur="1.5s" begin="2.0s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="-10" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="30" dur="1.5s" begin="2.4s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="15" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="20" dur="1.5s" begin="2.6s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="-20" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-30" dur="1.5s" begin="1.7s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="18" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-25" dur="1.5s" begin="2.0s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="0" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-15" dur="1.5s" begin="2.2s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="10" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-20" dur="1.5s" begin="2.5s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="-12" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-35" dur="1.5s" begin="2.8s" fill="freeze" />
+        </ellipse>
+      </g>
+
+      <!-- 杯身 -->
+      <rect x="-40" y="-80" width="80" height="160" rx="15" ry="15" fill="none" stroke="#5C4632" stroke-width="3" />
+
+      <!-- 杯蓋 -->
+      <ellipse cx="0" cy="-80" rx="45" ry="12" fill="none" stroke="#5C4632" stroke-width="3" />
+      <!-- 吸管 -->
+      <rect x="-5" y="-130" width="10" height="50" rx="5" fill="none" stroke="#5C4632" stroke-width="3" />
+    </g>
+
+    <!-- 右邊的水果 -->
+    <g transform="translate(0, -500)">
+      <animateTransform attributeName="transform" type="translate" from="0,-500" to="0,0" dur="4s" fill="freeze"
+        begin="0s" />
+
+      <!-- 蘋果 -->
+      <g transform="translate(1050, 320) scale(2)">
+        <circle cx="0" cy="0" r="25" fill="#E53935" />
+        <circle cx="-10" cy="-5" r="6" fill="#ffffff" />
+        <path d="M -5,-25 C -13,-20, 3,-30 5,-25" stroke="#4CAF50" stroke-width="12" fill="none" />
+      </g>
+
+      <!-- 檸檬-->
+      <defs>
+        <radialGradient id="lemonGradient" cx="40%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#FFF176" />
+          <stop offset="100%" stop-color="#FBC02D" />
+        </radialGradient>
+        <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#66BB6A" />
+          <stop offset="100%" stop-color="#388E3C" />
+        </linearGradient>
+        <filter id="lemonShadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="2" dy="3" stdDeviation="2" flood-color="#e6b400" flood-opacity="0.5" />
+        </filter>
+      </defs>
+
+      <g transform="translate(900,350) rotate(-20)">
+        <path d="M 0,-45 C 25,-45 40,-25 45,0 C 40,25 25,45 0,45 C -25,45 -40,25 -45,0 C -40,-25 -25,-45 0,-45 Z"
+          fill="url(#lemonGradient)" filter="url(#lemonShadow)" />
+        <path d="M -15,-20 Q 0,-25 15,-20" stroke="#FDD835" stroke-width="1" fill="none" opacity="0.4" />
+        <path d="M -10,0 Q 0,-5 10,0" stroke="#FDD835" stroke-width="1" fill="none" opacity="0.4" />
+        <path d="M -40,-45 C -60,-70 -10,-75 -5,-50 C-5,-35 -25,-30 -40,-45 Z" fill="url(#leafGradient)" />
+      </g>
+
+      <!-- 葡萄 -->
+      <g transform="translate(1000,80) scale(2)">
+        <circle cx="0" cy="0" r="12" fill="#6A1B9A" />
+        <circle cx="15" cy="-8" r="10" fill="#7B1FA2" />
+        <circle cx="25" cy="10" r="9" fill="#9C27B0" />
+        <circle cx="10" cy="15" r="11" fill="#8E24AA" />
+        <circle cx="25" cy="-8" r="9" fill="#8E24AA" />
+        <circle cx="18" cy="25" r="9" fill="#8E24AA" />
+        <path d="M 0,-15 Q 15,-25 25,-15" stroke="#4B0073" stroke-width="2" fill="none" />
+      </g>
+
+      <!-- 西瓜 -->
+      <g transform="translate(850,140) scale(2)">
+        <ellipse rx="40" ry="25" fill="#A5D6A7" />
+        <ellipse rx="38" ry="20" fill="#F44336" />
+        <circle cx="10" cy="0" r="3" fill="000" />
+        <circle cx="0" cy="10" r="3" fill="#000" />
+        <circle cx="-10" cy="-5" r="3" fill="#000" />
+        <circle cx="15" cy="-8" r="3" fill="#000" />
+        <circle cx="-15" cy="8" r="3" fill="#000" />
+        <circle cx="5" cy="-12" r="3" fill="#000" />
+        <circle cx="-5" cy="12" r="3" fill="#000" />
+      </g>
+    </g>
+
+    <!--左邊珍珠奶茶 2杯-->
+    <g transform="translate(200, 200) scale(1.5)">
+      <rect x="-40" y="80" width="80" height="0" fill="#F3E5C2" clip-path="url(#cup-clip)">
+        <!-- 你會看到「飲料」的長方形動畫，只會在杯子的形狀裡出現 -->
+        <animate attributeName="height" from="0" to="160" dur="2s" begin="0s" fill="freeze" />
+        <!-- fill="freeze" 是在說動畫「完成之後，結果要不要保留？」freeze → 動畫結束後保持「最後的狀態」-->
+        <animate attributeName="y" from="80" to="-80" dur="2s" begin="0s" fill="freeze" />
+      </rect>
+
+      <g clip-path="url(#cup-clip)">
+        <!-- 珍珠 -->
+        <circle cx="-25" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="-60" dur="1.5s" begin="0s" fill="freeze" />
+        </circle>
+        <circle cx="-15" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="-40" dur="1.5s" begin="0.3s" fill="freeze" />
+        </circle>
+        <circle cx="-5" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="0" dur="1.5s" begin="0.5s" fill="freeze" />
+        </circle>
+        <circle cx="5" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="30" dur="1.5s" begin="0.8s" fill="freeze" />
+        </circle>
+        <circle cx="15" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="60" dur="1.5s" begin="1.0s" fill="freeze" />
+        </circle>
+        <circle cx="-20" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="40" dur="1.5s" begin="1.2s" fill="freeze" />
+        </circle>
+        <circle cx="10" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="10" dur="1.5s" begin="1.5s" fill="freeze" />
+        </circle>
+        <circle cx="-10" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="-5" dur="1.5s" begin="1.7s" fill="freeze" />
+        </circle>
+
+        <!-- 椰果 -->
+        <rect x="-18" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="30" dur="1.5s" begin="0.6s" fill="freeze" />
+        </rect>
+        <rect x="0" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="10" dur="1.5s" begin="1.4s" fill="freeze" />
+        </rect>
+        <rect x="-10" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="15" dur="1.5s" begin="1.9s" fill="freeze" />
+        </rect>
+        <rect x="5" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="35" dur="1.5s" begin="2.2s" fill="freeze" />
+        </rect>
+        <rect x="15" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="50" dur="1.5s" begin="2.5s" fill="freeze" />
+        </rect>
+        <rect x="-25" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-40" dur="1.5s" begin="0.8s" fill="freeze" />
+        </rect>
+        <rect x="20" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-30" dur="1.5s" begin="1.6s" fill="freeze" />
+        </rect>
+        <rect x="-5" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-45" dur="1.5s" begin="2.1s" fill="freeze" />
+        </rect>
+        <rect x="10" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-35" dur="1.5s" begin="2.6s" fill="freeze" />
+        </rect>
+        <rect x="-15" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-50" dur="1.5s" begin="2.9s" fill="freeze" />
+        </rect>
+
+        <!-- 仙草 -->
+        <rect x="10" y="80" width="7" height="7" fill="#3B3B3B">
+          <animate attributeName="y" from="-80" to="10" dur="1.5s" begin="0.7s" fill="freeze" />
+        </rect>
+        <rect x="-12" y="-80" width="7" height="7" fill="#3B3B3B">
+          <animate attributeName="y" from="-80" to="35" dur="1.5s" begin="1.6s" fill="freeze" />
+        </rect>
+        <rect x="-5" y="-80" width="7" height="7" fill="#3B3B3B">
+          <animate attributeName="y" from="-80" to="20" dur="1.5s" begin="2.3s" fill="freeze" />
+        </rect>
+        <rect x="15" y="-80" width="7" height="7" fill="#3B3B3B">
+          <animate attributeName="y" from="-80" to="15" dur="1.5s" begin="2.5s" fill="freeze" />
+        </rect>
+
+        <!-- 布丁 -->
+        <ellipse cx="-2" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="5" dur="1.5s" begin="1.8s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="8" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-10" dur="1.5s" begin="2.0s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="-10" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="30" dur="1.5s" begin="2.4s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="15" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="20" dur="1.5s" begin="2.6s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="-20" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-30" dur="1.5s" begin="1.7s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="18" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-25" dur="1.5s" begin="2.0s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="0" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-15" dur="1.5s" begin="2.2s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="10" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-20" dur="1.5s" begin="2.5s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="-12" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-35" dur="1.5s" begin="2.8s" fill="freeze" />
+        </ellipse>
+      </g>
+
+      <!-- 杯身 -->
+      <rect x="-40" y="-80" width="80" height="160" rx="15" ry="15" fill="none" stroke="#5C4632" stroke-width="3" />
+
+      <!-- 杯蓋 -->
+      <ellipse cx="0" cy="-80" rx="45" ry="12" fill="none" stroke="#5C4632" stroke-width="3" />
+      <!-- 吸管 -->
+      <rect x="-5" y="-130" width="10" height="50" rx="5" fill="none" stroke="#5C4632" stroke-width="3" />
+    </g>
+
+    <g transform="translate(400, 300) scale(1.5)">
+      <rect x="-40" y="80" width="80" height="0" fill="#F3E5C2" clip-path="url(#cup-clip)">
+        <!-- 你會看到「飲料」的長方形動畫，只會在杯子的形狀裡出現 -->
+        <animate attributeName="height" from="0" to="160" dur="2s" begin="0s" fill="freeze" />
+        <!-- fill="freeze" 是在說動畫「完成之後，結果要不要保留？」freeze → 動畫結束後保持「最後的狀態」-->
+        <animate attributeName="y" from="80" to="-80" dur="2s" begin="0s" fill="freeze" />
+      </rect>
+
+      <g clip-path="url(#cup-clip)">
+        <!-- 珍珠 -->
+        <circle cx="-25" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="-60" dur="1.5s" begin="0s" fill="freeze" />
+        </circle>
+        <circle cx="-15" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="-40" dur="1.5s" begin="0.3s" fill="freeze" />
+        </circle>
+        <circle cx="-5" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="0" dur="1.5s" begin="0.5s" fill="freeze" />
+        </circle>
+        <circle cx="5" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="30" dur="1.5s" begin="0.8s" fill="freeze" />
+        </circle>
+        <circle cx="15" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="60" dur="1.5s" begin="1.0s" fill="freeze" />
+        </circle>
+        <circle cx="-20" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="40" dur="1.5s" begin="1.2s" fill="freeze" />
+        </circle>
+        <circle cx="10" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="10" dur="1.5s" begin="1.5s" fill="freeze" />
+        </circle>
+        <circle cx="-10" cy="-80" r="5" fill="#4E3629">
+          <animate attributeName="cy" from="-80" to="-5" dur="1.5s" begin="1.7s" fill="freeze" />
+        </circle>
+
+        <!-- 椰果 -->
+        <rect x="-18" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="30" dur="1.5s" begin="0.6s" fill="freeze" />
+        </rect>
+        <rect x="0" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="10" dur="1.5s" begin="1.4s" fill="freeze" />
+        </rect>
+        <rect x="-10" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="15" dur="1.5s" begin="1.9s" fill="freeze" />
+        </rect>
+        <rect x="5" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="35" dur="1.5s" begin="2.2s" fill="freeze" />
+        </rect>
+        <rect x="15" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="50" dur="1.5s" begin="2.5s" fill="freeze" />
+        </rect>
+        <rect x="-25" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-40" dur="1.5s" begin="0.8s" fill="freeze" />
+        </rect>
+        <rect x="20" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-30" dur="1.5s" begin="1.6s" fill="freeze" />
+        </rect>
+        <rect x="-5" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-45" dur="1.5s" begin="2.1s" fill="freeze" />
+        </rect>
+        <rect x="10" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-35" dur="1.5s" begin="2.6s" fill="freeze" />
+        </rect>
+        <rect x="-15" y="-80" width="6" height="10" fill="#FFFFFFAA" rx="1">
+          <animate attributeName="y" from="-80" to="-50" dur="1.5s" begin="2.9s" fill="freeze" />
+        </rect>
+
+        <!-- 仙草 -->
+        <rect x="10" y="80" width="7" height="7" fill="#3B3B3B">
+          <animate attributeName="y" from="-80" to="10" dur="1.5s" begin="0.7s" fill="freeze" />
+        </rect>
+        <rect x="-12" y="-80" width="7" height="7" fill="#3B3B3B">
+          <animate attributeName="y" from="-80" to="35" dur="1.5s" begin="1.6s" fill="freeze" />
+        </rect>
+        <rect x="-5" y="-80" width="7" height="7" fill="#3B3B3B">
+          <animate attributeName="y" from="-80" to="20" dur="1.5s" begin="2.3s" fill="freeze" />
+        </rect>
+        <rect x="15" y="-80" width="7" height="7" fill="#3B3B3B">
+          <animate attributeName="y" from="-80" to="15" dur="1.5s" begin="2.5s" fill="freeze" />
+        </rect>
+
+        <!-- 布丁 -->
+        <ellipse cx="-2" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="5" dur="1.5s" begin="1.8s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="8" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-10" dur="1.5s" begin="2.0s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="-10" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="30" dur="1.5s" begin="2.4s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="15" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="20" dur="1.5s" begin="2.6s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="-20" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-30" dur="1.5s" begin="1.7s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="18" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-25" dur="1.5s" begin="2.0s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="0" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-15" dur="1.5s" begin="2.2s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="10" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-20" dur="1.5s" begin="2.5s" fill="freeze" />
+        </ellipse>
+        <ellipse cx="-12" cy="-80" rx="6" ry="4" fill="#F7D488">
+          <animate attributeName="cy" from="-80" to="-35" dur="1.5s" begin="2.8s" fill="freeze" />
+        </ellipse>
+      </g>
+
+      <!-- 杯身 -->
+      <rect x="-40" y="-80" width="80" height="160" rx="15" ry="15" fill="none" stroke="#5C4632" stroke-width="3" />
+
+      <!-- 杯蓋 -->
+      <ellipse cx="0" cy="-80" rx="45" ry="12" fill="none" stroke="#5C4632" stroke-width="3" />
+      <!-- 吸管 -->
+      <rect x="-5" y="-130" width="10" height="50" rx="5" fill="none" stroke="#5C4632" stroke-width="3" />
+    </g>
+  </svg>
+
+  <section>
+    <div class="concept-slider-wrapper">
+      <section class="concept-slider">
+        <div class="slide-container" id="slide-container">
+
+        </div>
+      </section>
+
+      <div class="nav-buttons">
+        <button id="prevBtn" aria-label="上一頁">←</button>
+        <button id="nextBtn" aria-label="下一頁">→</button>
+      </div>
+      <!-- aria-label 它讓使用螢幕閱讀器（screen readers）的使用者（通常是視障者）知道這個元素的「意義」或「功能」，即使這個元素本身沒有文字描述。-->
+
+    </div>
+
+  </section>
+
+  <section id="Joint_Activities">
+    <div class="slider">
+      <div class="slides" id="slides">
+        <div class="slide2-wrapper">
+          <div class="slide2">
+            <img src="img/cartoon.jpg" alt="activity1" />
+            <div class="star"></div>
+          </div>
+          <div class="caption">✦ 與哆啦a夢的聯名活動 ✦</div>
+        </div>
+        <div class="slide2-wrapper">
+          <div class="slide2">
+            <img src="img/cartoon2.jpg" alt="activity2" />
+            <div class="star"></div>
+          </div>
+          <div class="caption">✦ 與蠟筆小新的聯名活動 ✦</div>
+        </div>
+
+        <div class="slide2-wrapper">
+          <div class="slide2">
+            <img src="img/activity3.jpg" alt="activity3" />
+            <div class="star"></div>
+          </div>
+          <div class="caption">✦ 與三麗鷗的聯名活動 ✦</div>
+        </div>
+
+        <div class="slide2-wrapper">
+          <div class="slide2">
+            <img src="img/cartoon3.png" alt="activity4" />
+            <div class="star"></div>
+          </div>
+          <div class="caption">✦ 與櫻桃小丸子的聯名活動 ✦</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="margin-top: 650px; padding:40px 20px; font-family: Arial, sans-serif;" id="container">
+    <p style="text-align: center; color: #a9744d;font-size: 16px; margin-bottom: 50px;">
+      我們的故事，像茶香緩緩流動……
+    </p>
+    <div style="position: relative; height: 340px; width: 100vw; max-width: 100vw; overflow: hidden">
+      <svg viewBox="0 0 1200 100" preserveAspectRatio="none" style="width: 100%; height: 100px; display: block;">
+        <!--preserveAspectRatio是表示 SVG 在放大或縮小時，不保留原本的比例。-->
+        <path id="wavePath" d="M 0 50 Q 100 10 200 50 T 600 50 T 1000 50 T 1200 50" stroke="#7a5230" stroke-width="4"
+          fill="none" />
+      </svg>
+
+      <div class="node" data-length="200" data-text="2010年：品牌誕生於炎熱夏天，改寫茶飲歷史。">
+        <div class="dot"></div>
+        <div class="label">2010年</div>
+      </div>
+
+      <div class="node" data-length="500" data-text="2015年：開發獨門熟成工法，味道更加濃郁。">
+        <div class="dot"></div>
+        <div class="label">2015年</div>
+      </div>
+
+      <div class="node" data-length="900" data-text="2020年：首次與名牌合作聯名，市場反應熱烈。">
+        <div class="dot"></div>
+        <div class="label">2020年</div>
+      </div>
+
+      <div class="node" data-length="1700" data-text="2025年：推動環保杯，響應綠色環保理念。">
+        <div class="dot"></div>
+        <div class="label">2025年</div>
+      </div>
+
+      <div id="floating-droplets"></div>
+    </div>
+  </section>
+
+
+  <div class="wave"></div>
+  <footer class="footer">
+
+    <div class="footer__information">
+      <a class="footer__info-item" href="tel:+8860800123456"> <!-- tel: 是用來讓人 點一下就可以撥電話 的功能。 -->
+        <i class="fa-solid fa-phone"></i> 0800-123-456
+      </a>
+      <a class="footer__info-item" href="mailto:speed@gmail.com">
+        <i class="fa-solid fa-envelope"></i>speed@gmail.com
+      </a>
+
+      <div class="footer__social">
+        <a href="#" target=_blank>
+          <i class="fa-brands fa-line"></i>
+        </a>
+        <a href="#" target=_blank>
+          <i class="fa-brands fa-facebook"></i>
+        </a>
+        <a href="#" target=_blank>
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+      </div>
+
+      <p class="copyright">
+        品質｜創新｜服務｜衛生<br>
+        Copyright © 2025 speed beverage store. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+</body>
+<script src="js/homepage.js"></script>
+
+
+</html>

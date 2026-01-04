@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> speed</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧋</text></svg>">
+    <link rel="stylesheet" href="./css/menu.css">
+
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="/homepage">首頁</a></li>
+        <li><a href="/menu">菜單</a></li>
+        <li><a href="/order">線上訂購</a></li>
+        <li><a href="/storepage">門市據點</a></li>
+        <li><a href="/brandStory" class="active">品牌故事</a></li>
+        <li><a href="/frequentlyaskedquestions">常見問題</a></li>
+
+        <% if (user) { %>
+          <li><a onclick="return false;">歡迎 <%= user.username %></a></li>
+          <li><a href="/logout">登出</a></li>
+          <% } else { %>
+            <li><a href="/login">登入</a></li>
+            <% } %>
+      </ul>
+    
+      <div class = "hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+  
+  <div id="main-content-wrapper">
+        
+        <svg viewBox = "0 0 700 1650">
+            <path class="background" d="M50 1620 L30 1600 V100 L50 80 H650 L670 100 V1600 L650 1620 Z"/> <!-- V是垂直 ， 直上或直下-->
+            <path class = "line" d = "M50 100 H650 V1600 H50 Z"/> <!-- 外框 -->
+            <path class = "line" d = "M350 100 V1600" />
+            
+            <path class = "line" d = "M50 100 V250" />
+            <path class = "line" d = "M50 250 V400" />
+            <path class = "line" d = "M50 400 V550" />
+            <path class = "line" d = "M50 550 V700" />
+            <path class = "line" d = "M50 700 V850" />
+            <path class = "line" d = "M50 850 V1000" />
+            <path class = "line" d = "M50 1000 V1150" />
+            <path class = "line" d = "M50 1150 V1300" />
+            <path class = "line" d = "M50 1300 V1450" />
+            <path class = "line" d = "M50 1450 V1600" />
+        
+            <path class = "line" d = "M50 250 H650" />
+            <path class = "line" d = "M50 400 H650" />
+            <path class = "line" d = "M50 550 H650" />
+            <path class = "line" d = "M50 700 H650" />
+            <path class = "line" d = "M50 850 H650" />
+            <path class = "line" d = "M50 1000 H650" />
+            <path class = "line" d = "M50 1150 H650" />
+            <path class = "line" d = "M50 1300 H650" />
+            <path class = "line" d = "M50 1450 H650" />
+            <path class = "line" d = "M50 1600 H650" />
+        </svg>
+
+        <div id = "princess-box" class = "dash-box"></div>
+        <img id = "princess" src = "img/Princess.jpg" width = "100" height = "100" opacity = "0" />
+
+        <div id = "menu-text">
+            <p class="tea1">
+                月光玫瑰 M 90 / L 110<br>
+                <span class="tea1-span">🌟玫瑰香氣 + 微甜奶霜，名字浪漫像月光下的花</span>
+            </p>
+            <p class="tea2">
+                晨露檸檬 M 85 / L 100<br>
+                <span class="tea2-span">🌟清新檸檬 + 薄荷微涼，像早晨的露水</span>
+            </p>
+            <p class="tea3">
+                雲端焦糖 M 95 / L 115<br>
+                <span class="tea3-span">🌟奶茶 + 焦糖泡沫，柔軟像雲朵</span>
+            </p>
+        </div>
+
+        <div id="menu-text2">
+            <p class="tea4">
+                星雲莓果 M 95 / L 115<br>
+                <span class="tea4-span">🌟莓果 + 氣泡水，色彩夢幻，微酸微甜</span>
+            </p>
+            <p class="tea5">
+                月影抹茶 M 100 / L 120<br>
+                <span class="tea5-span">🌟抹茶 + 牛奶，微苦回甘，如月光般柔和</span>
+            </p>
+            <p class="tea6">
+                焦糖雲朵 M 95 / L 110<br>
+                <span class="tea6-span">🌟奶霜 + 焦糖糖漿，柔軟甜蜜如雲朵</span>
+            </p>
+        </div>
+
+        <div id = "hand_shaken_drinks_box" class = "dash-box2"></div>
+        <img id = "hand_shaken_drinks" src = "img/Hand-shaken drinks.png" width = "100" height = "100" opacity = "0" />
+        
+        <div id = "menu-text3">
+            <p class="tea7">
+                星語茉莉 M 90 / L 110<br>
+                <span class="tea4-span">🌟茉莉花香 + 蜂蜜清甜，像夜空裡的悄悄話</span>
+            </p>
+            <p class="tea8">
+                琥珀烏龍 M 85 / L 100<br>
+                <span class="tea5-span">🌟烏龍茶韻 + 焦糖香氣，溫潤如暮色餘暉</span>
+            </p>
+            <p class="tea9">
+                霧之莓語 M 95 / L 115<br>
+                <span class="tea6-span">🌟莓果香氣 + 奶霜柔滑，像霧中輕語的甜夢</span>
+            </p>
+        </div>
+        <div id = "animal-box" class = "dash-box"></div>
+        <img id = "animal" src = "img/animal.png" width = "100" height = "100" opacity = "0" />
+
+        <div id="menu-text4">
+            <p class="tea10">
+                星霧奶香 M 95 / L 110<br>
+                <span class="tea10-span">🌟香濃牛奶 + 雲霧奶霜，柔滑如星光灑落的夢境</span>
+            </p>
+            <p class="tea11">
+                晨曦蜜桃 M 90 / L 105<br>
+                <span class="tea11-span">🌟白桃果香 + 輕盈茶氣，甜美如拂曉的微光</span>
+            </p>
+            <p class="tea12">
+                月紗花語 M 100 / L 120<br>
+                <span class="tea12-span">🌟花香茶底 + 蜂蜜香氣，細膩如月光下的呢喃</span>
+            </p>
+        </div>
+
+        <div id = "girl_and_flower_box" class = "dash-box2"></div>
+        <img id = "girl_and_flower" src = "img/girl_and_flower.png" width = "100" height = "100" opacity = "0" />
+
+        <div id = "coffee_aroma_box" class = "dash-box"></div>
+        <img id = "coffee_aroma" src = "img/coffee_aroma.png" width = "100" height = "100" opacity = "0" />
+
+        <div id="menu-text5">
+            <p class="tea13">
+                暮光摩卡 M 110 / L 130<br>
+                <span class="tea13-span">🌟濃郁可可融合咖啡，苦甜柔和如暮光。</span>
+            </p>
+            <p class="tea14">
+                星夜拿鐵 M 115 / L 135<br>
+                <span class="tea14-span">🌟奶泡細緻柔順，咖啡香氣如夜色綻放。</span>
+
+            </p>
+            <p class="tea15">
+                月影卡布奇諾 M 120 / L 140<br>
+                <span class="tea15-span">🌟濃縮咖啡搭配奶泡，層次柔美如月影。</span>
+            </p>
+        </div>
+
+        <div id="menu-text6">
+            <p class="tea16">
+                星落白玉奶茶 M 95 / L 115<br>
+                <span class="tea16-span">🌟奶香柔順伴白玉彈性，如星光落入掌心。</span>
+            </p>
+            <p class="tea17">
+                露晨青檸氣泡 M 85 / L 100<br>
+                <span class="tea17-span">🌟清爽青檸與氣泡交織，像晨露輕跳微光。</span>
+            </p>
+            <p class="tea18">
+                月霜琥珀紅茶 M 90 / L 110<br>
+                <span class="tea18-span">🌟琥珀茶韻溫潤細緻，如月霜輕落夜色中。</span>
+            </p>
+        </div>
+
+        <div id = "Pearl_milk_tea_box" class = "dash-box"></div>
+        <img id = "Pearl_milk_tea" src = "img/Pearl_milk_tea.png" width = "100" height = "100" opacity = "0" />
+
+        <div id = "teapot_box" class = "dash-box"></div>
+        <img id = "teapot" src = "img/teapot.png" width = "100" height = "100" opacity = "0" />
+        <div id="menu-text7">
+            <p class="tea19">
+                星空琉璃 M 95 / L 115<br>
+                <span class="tea19-span">🌟藍柑橘與白葡萄交織，如琉璃般透亮夢幻。</span>
+            </p>
+            <p class="tea20">
+                月泉白霜 M 90 / L 110<br>
+                <span class="tea20-span">🌟清香茶韻搭配奶霜，柔和如月泉輕盈綻放。</span>
+            </p>
+            <p class="tea21">
+                曦光莓語 M 100 / L 120<br>
+                <span class="tea21-span">🌟莓果清香融柔茶氣，甜美如曦光灑落心間。</span>
+            </p>
+        </div>
+
+        <div id = "girl_box" class = "dash-box2"></div>
+        <img id="girl" src="img/girl.png" width="100" height="100" opacity = "0" />
+        
+        <div id = "menu-text8">
+            <p class="tea22">
+                星澈雲泡 M 95 / L 115<br>
+                <span class="tea22-span">🌟清甜茶香覆奶泡層次，如星澈輕拂雲面。</span>
+            </p>
+
+            <p class="tea23">
+                月霧雪頂 M 105 / L 125<br>
+                <span class="tea23-span">🌟香草冰淇淋融茶韻，柔滑如月霧落雪。</span>
+            </p>
+
+            <p class="tea24">
+                曦光氣泡 M 90 / L 110<br>
+                <span class="tea24-span">🌟柑橘氣泡明亮清香，如曦光跳躍微風。</span>
+            </p>
+        </div>
+
+        <!--<p> 是「一整段」占滿一整行 上下會有空間（margin）<span> 是「段落裡的某幾個字」-->
+
+        <div id = "info-block">
+            <h2>✨ 特調奢華升級 ✨</h2>
+            <p>
+                <span class="addon-name">白玉珍珠 / 水玉晶球(寒天蒟蒻)</span><span class="addon-price"> + $10</span><br>
+                <span class="addon-name">厚實奶霜 / 焦糖海鹽</span><span class="addon-price"> + $15</span><br>
+                <span class="addon-name">琥珀寒天</span><span class="addon-price"> + $20</span><br>
+                <span class="addon-name">手工芋圓</span><span class="addon-price"> + $25</span><br>
+            </p>
+            <p class="small-note">(冷飲/熱飲配料與價格略有差異，請以現場實際情況為主)</p>
+        </div>
+
+        <div id = "download_box" class = "dash-box"></div>
+        <a href="menu.pdf" download="菜單.pdf"> <!-- 當使用者點擊連結時，不是開啟檔案，而是「直接下載」 而且下載下來的檔案名稱會強制變成 菜單.pdf -->
+            <img id = "download" src = "img/download.png" width="100" height="100" opacity = "0" />
+        </a>
+        <!-- 讓整張圖片變成可以點擊的超連結，所以要把 <img> 包在 <a> 裡。 -->
+
+        <section id = "features">
+            <div>
+                <span class="span">✨ Our tea beverage features ✨</span><br>
+
+                <span class="subtitle">我們的茶飲特色</span><br>
+                <div class = "btn">了解更多</div>
+            </div>
+        </section>
+        
+        <section id = "features-2">
+            <div>
+                <span class="eco-title">🍃 Our Eco-Friendly Collection 🍃</span><br>
+
+                <span class="eco-subtitle">我們的環保商品</span><br>
+                <div class = "btn">了解更多</div>
+            </div>
+        </section>
+    </div> 
+    
+    <!-- 想表達「章節/主題」 → <section> 只是為了分組或排版 → <div>-->
+    <script src="js/menu.js"></script>
+</body> </html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> speed</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧋</text></svg>">
+  <link rel="stylesheet" href="css/frequentlyaskedquestions.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="/homepage">首頁</a></li>
+        <li><a href="/menu">菜單</a></li>
+        <li><a href="/order">線上訂購</a></li>
+        <li><a href="/storepage">門市據點</a></li>
+        <li><a href="/brandStory" class="active">品牌故事</a></li>
+        <li><a href="/frequentlyaskedquestions">常見問題</a></li>
+
+        <% if (user) { %>
+          <li><a onclick="return false;">歡迎 <%= user.username %></a></li>
+          <li><a href="/logout">登出</a></li>
+          <% } else { %>
+            <li><a href="/login">登入</a></li>
+            <% } %>
+      </ul>
+      
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+  <section class="faq-header">
+    <h1>常見問題</h1>
+    <p>有任何疑問，我們都替你準備好答案</p>
+  </section>
+
+  <section class="faq-container">
+    <div class="faq-group" id="order">
+      <h2>訂單問題</h2>
+      <details> <!-- 這段 HTML 是用來做折疊式問答的效果，<details>是用來創建可展開或折疊的區塊，<summary>是<details> 的標題部分-->
+        <summary>可以線上修改訂單內容嗎？</summary>
+        <p>訂單成立後即進入製作流程，為確保飲品品質，恕無法修改內容。</p>
+      </details>
+      <details>
+        <summary>線上訂購多久可以取餐？</summary>
+        <p>一般約 10–15 分鐘，實際時間依門市現場狀況為準。</p>
+      </details>
+    </div>
+
+    <div class="faq-group" id="member">
+      <h2>會員制度</h2>
+      <details>
+        <summary>加入會員需要費用嗎？</summary>
+        <p>完全免費，只需手機號碼即可加入。</p>
+      </details>
+      <details>
+        <summary>會員可以享有哪些優惠？</summary>
+        <p>會員可享有集點回饋、生日優惠與不定期專屬活動。</p>
+      </details>
+    </div>
+
+    <div class="faq-group" id="refund">
+      <h2>退換貨政策</h2>
+      <details>
+        <summary>飲料可以退換嗎？</summary>
+        <p>若商品有製作錯誤，請於取餐當下告知門市人員，將立即為您處理。</p>
+      </details>
+      <details>
+        <summary>不喜歡口味可以更換嗎？</summary>
+        <p>因個人口味因素，恕無法提供退換服務。</p>
+      </details>
+    </div>
+
+    <div class="faq-group" id="payment">
+      <h2>付款方式</h2>
+      <details>
+        <summary>支援哪些付款方式？</summary>
+        <p>現金、信用卡、LINE Pay、Apple Pay 依各門市提供為準。</p>
+      </details>
+      <details>
+        <summary>可以開立發票嗎？</summary>
+        <p>本公司全面提供電子發票，消費後可於會員系統查詢。</p>
+      </details>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2025 Speed Beverage Store</p>
+  </footer>
+
+  <script src="js/frequentlyaskedquestions.js"></script>
+</body>
+
+</html>

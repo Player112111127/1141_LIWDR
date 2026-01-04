@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> speed</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧋</text></svg>">
+  <link rel="stylesheet" href="css/storepage.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="/homepage">首頁</a></li>
+        <li><a href="/menu">菜單</a></li>
+        <li><a href="/order">線上訂購</a></li>
+        <li><a href="/storepage">門市據點</a></li>
+        <li><a href="/brandStory" class="active">品牌故事</a></li>
+        <li><a href="/frequentlyaskedquestions">常見問題</a></li>
+
+        <% if (user) { %>
+          <li><a onclick="return false;">歡迎 <%= user.username %></a></li>
+          <li><a href="/logout">登出</a></li>
+          <% } else { %>
+            <li><a href="/login">登入</a></li>
+            <% } %>
+      </ul>
+
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+
+  <section id="map-section">
+    <!-- <iframe> = 內嵌框架，作用是在網頁裡嵌入另一個網站或資源，這裡是嵌入 Google 地圖 -->
+    <!-- loading="lazy"延遲載入，當使用者滑到 iframe 區域時才載入，提高頁面載入速度-->
+    <!-- allowfullscreen 允許 iframe 的內容可以 全螢幕顯示 -->
+    <!-- referrerPolicy 控制 瀏覽器在發送請求給 iframe 或其他資源時，會不會帶上來源網址（也就是 HTTP Header 的 Referer），no-referrer → 在某些情況下不送來源網址，when-downgrade → 只有當「安全層級下降」時才不送-->
+    <!-- src="https://www.google.com/maps/embed?pb=..." 指定 iframe 要顯示的內容網址-->
+    <iframe
+      width="100%"
+      height="100%"
+      loading="lazy"
+      allowfullscreen
+      referrerpolicy="no-referrer-when-downgrade"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28927.880674078996!2d121.5200766!3d25.04180835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97e1bbf7d53%3A0xbcd768a5c1ae7b5b!2z5Y-w5YyX5biC56eR5oqA5aSn5a24!5e0!3m2!1szh-TW!2stw!4v1700000000000">
+    </iframe>
+  </section>
+
+  <section id="stores">
+    <h2>門市據點</h2>
+
+    <div class="store-grid">
+
+      <div class="store-card">
+        <img src="img/drink-01.png" alt="新北板橋店">
+        <div>
+          <h3>新北板橋店</h3>
+          <p>地址：新北市板橋區文化路一段 123 號</p>
+          <p>
+            電話：
+            <a href="tel:0212345678">(02) 1234-5678</a> <!-- 點擊這個連結後，會打電話給 0212345678 -->
+          </p>
+        </div>
+      </div>
+
+      <div class="store-card">
+        <img src="img/drink-02.png" alt="新北三重店">
+        <div>
+          <h3>新北三重店</h3>
+          <p>地址：新北市三重區重新路四段 88 號</p>
+          <p>
+            電話：
+            <a href="tel:0212345678">(02) 1234-5678</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="store-card">
+        <img src="img/drink-03.png" alt="台北中山店">
+        <div>
+          <h3>台北中山店</h3>
+          <p>地址：台北市中山區南京東路 45 號</p>
+          <p>
+            電話：
+            <a href="tel:0212345678">(02) 1234-5678</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="store-card">
+        <img src="img/drink-04.png" alt="台北信義店">
+        <div>
+          <h3>台北信義店</h3>
+          <p>地址：台北市信義區松智路 28 號</p>
+          <p>
+            電話：
+            <a href="tel:0212345678">(02) 1234-5678</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="store-card">
+        <img src="img/drink-05.png" alt="台北士林店">
+        <div>
+          <h3>台北士林店</h3>
+          <p>地址：台北市士林區中正路 102 號</p>
+          <p>
+            電話：
+            <a href="tel:0212345678">(02) 1234-5678</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="store-card">
+        <img src="img/drink-06.png" alt="台中逢甲店">
+        <div>
+          <h3>台中逢甲店</h3>
+          <p>地址：台中市西屯區逢甲路 20 巷 5 號</p>
+          <p>
+            電話：
+            <a href="tel:0423456789">(04) 2345-6789</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="store-card">
+        <img src="img/drink-07.png" alt="桃園中壢店">
+        <div>
+          <h3>桃園中壢店</h3>
+          <p>地址：桃園市中壢區中平路 66 號</p>
+          <p>
+            電話：
+            <a href="tel:032345678">(03) 2345-678</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="store-card">
+        <img src="img/drink-08.png" alt="高雄左營店">
+        <div>
+          <h3>高雄左營店</h3>
+          <p>地址：高雄市左營區高鐵路 12 號</p>
+          <p>
+            電話：
+            <a href="tel:072345678">(07) 2345-678</a>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <script src="js/storepage.js"></script>
+</body>
+
+</html>

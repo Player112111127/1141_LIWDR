@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>speed</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧋</text></svg>">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/homepage">首頁</a></li>
+        <li><a href="/menu">菜單</a></li>
+        <li><a href="/order">線上訂購</a></li>
+        <li><a href="/storepage">門市據點</a></li>
+        <li><a href="/brandStory">品牌故事</a></li>
+        <li><a href="/frequentlyaskedquestions">常見問題</a></li>
+      </ul>
+
+      <div class="hamburger" id="hamburger" aria-label="menu" role="button" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page">
+    <div class="wrap">
+
+      <!-- ✅ 一定要 active，否則 CSS 會 display:none -->
+      <div class="card active" id="login-box">
+        <div class="header-card">
+          <div class="brand">
+            <div class="logo" aria-hidden="true"></div>
+            <div>
+              <h2>會員登入</h2>
+              <p class="sub">登入後即可使用線上訂購功能</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="content">
+          <form id="login">
+            <div class="field">
+              <label>帳號</label>
+              <input class="input" name="username" autocomplete="username" required />
+            </div>
+
+            <div class="field">
+              <label>密碼</label>
+              <input class="input" name="password" type="password" autocomplete="current-password" required />
+            </div>
+
+            <button class="btn" id="loginBtn" type="submit">登入</button>
+            <div id="toast" class="toast" role="alert"></div>
+          </form>
+
+          <p class="hint">還沒有帳號？ <a href="/register">前往註冊</a></p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // ===== 漢堡選單 =====
+    const hamburger = document.getElementById("hamburger");
+    const navLinks = document.getElementById("navLinks");
+    if (hamburger && navLinks) {
+      hamburger.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
+    }
+
+    // ===== login =====
+    const form = document.getElementById("login");
+    const btn = document.getElementById("loginBtn");
+    const toast = document.getElementById("toast");
+
+    function showToast(msg, type){
+      toast.textContent = msg || "";
+      toast.className = "toast show " + (type || "");
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      btn.disabled = true;
+      const oldText = btn.textContent;
+      btn.textContent = "登入中...";
+
+      const payload = Object.fromEntries(new FormData(e.target).entries());
+
+      try {
+        const r = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        // ✅ 無論成功失敗，都把回傳內容顯示出來（方便你抓真正原因）
+        let j = null;
+        try { j = await r.json(); } catch (_) {}
+
+        console.log("LOGIN status:", r.status, "response:", j);
+
+        if (r.ok) {
+          showToast((j && j.message) ? j.message : "登入成功！即將回到首頁…", "ok");
+          setTimeout(() => location.href = "/homepage", 600);
+        } else {
+          // ✅ 把後端 error 完整印出來
+          const msg =
+            (j && (j.error || j.message)) ||
+            ("登入失敗（HTTP " + r.status + "）");
+
+          showToast(msg, "bad");
+        }
+      } catch (err) {
+        console.error("LOGIN fetch error:", err);
+        showToast("連線失敗，請稍後再試", "bad");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = oldText;
+      }
+    });
+  </script>
+</body>
+</html>

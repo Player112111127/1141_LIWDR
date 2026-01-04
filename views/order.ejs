@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> speed</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧋</text></svg>">
+  <link rel="stylesheet" href="css/order.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="/homepage">首頁</a></li>
+        <li><a href="/menu">菜單</a></li>
+        <li><a href="/order">線上訂購</a></li>
+        <li><a href="/storepage">門市據點</a></li>
+        <li><a href="/brandStory" class="active">品牌故事</a></li>
+        <li><a href="/frequentlyaskedquestions">常見問題</a></li>
+
+        <% if (user) { %>
+          <li><a onclick="return false;">歡迎 <%= user.username %></a></li>
+          <li><a href="/logout">登出</a></li>
+          <% } else { %>
+            <li><a href="/login">登入</a></li>
+            <% } %>
+      </ul>
+
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>線上訂購</h1>
+    </section>
+
+    <section class="container">
+      <!-- 商品區 -->
+      <div class="products" id="products"></div>
+
+      <!-- 購物車 -->
+      <aside class="cart"> <!-- 用於側邊內容，通常是輔助資訊 -->
+        <h3>購物車</h3>
+        <ul id="cartList"></ul>
+        <p>總金額：NT$ <span id="total">0</span></p> <!-- 用 JS 更新數字，例如購買商品後金額增加 -->
+
+        <div class="checkout">
+          <input type="text" id="name" placeholder="姓名" /> <!-- 當輸入框是空的時候，會在框內顯示灰色文字，提示使用者應該在這裡輸入什麼 -->
+          <input type="tel" id="phone" placeholder="電話" /> <!-- 當輸入框是空的時候，會在框內顯示灰色文字，提示使用者應該在這裡輸入什麼 -->
+          <select id="pickup">
+            <option value="">取餐方式</option> <!-- 在 HTML <input> 或 <textarea> 裡，value 屬性用來設定 欄位的初始值，也就是表單一開始的內容-->
+            <option>門市自取</option>
+            <option>外送</option>
+          </select>
+          <button onclick="submitOrder()">送出訂單</button>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 飲料店線上訂購系統
+  </footer>
+
+  <script>
+    const products = [ /* const 表示變數不能重新指派整個陣列，但可以修改陣列裡的內容。 */
+      { name: '月光玫瑰', price: { M: 90, L: 110 }, img: '/img/order-img/1moonlight_rose.png' },
+      { name: '晨露檸檬', price: { M: 85, L: 100 }, img: '/img/order-img/2morning_lemon.png' },
+      { name: '雲端焦糖', price: { M: 95, L: 115 }, img: '/img/order-img/3cloud_caramel.png' },
+      { name: '星雲莓果', price: { M: 100, L: 120 }, img: '/img/order-img/4nebula_berry.png' },
+      { name: '月影抹茶', price: { M: 100, L: 120 }, img: '/img/order-img/5moonlight_matcha.png' },
+      { name: '焦糖雲朵', price: { M: 95, L: 110 }, img: '/img/order-img/6caramel_cloud.png' },
+      { name: '星語茉莉', price: { M: 90, L: 110 }, img: '/img/order-img/7star_jasmine.png' },
+      { name: '琥珀烏龍', price: { M: 85, L: 100 }, img: '/img/order-img/8amber_oolong.png' },
+      { name: '霧之莓語', price: { M: 95, L: 115 }, img: '/img/order-img/9fog_berry.png' },
+      { name: '星霧奶香', price: { M: 95, L: 110 }, img: '/img/order-img/10star_fog_milk.png' },
+      { name: '晨曦蜜桃', price: { M: 85, L: 100 }, img: '/img/order-img/11morning_peach.png' },
+      { name: '月紗花語', price: { M: 90, L: 110 }, img: '/img/order-img/12moon_fog_flower.png' },
+      { name: '暮光摩卡', price: { M: 110, L: 130 }, img: '/img/order-img/13moonlight_mocha.png' },
+      { name: '星夜拿鐵', price: { M: 115, L: 135 }, img: '/img/order-img/14star_night_latte.png' },
+      { name: '月影卡布奇諾', price: { M: 120, L: 140 }, img: '/img/order-img/15moonlight_cappuccino.png' },
+      { name: '星落白玉奶茶', price: { M: 95, L: 115 }, img: '/img/order-img/16star_fog_milk.png' },
+      { name: '露晨青檸氣泡', price: { M: 85, L: 100 }, img: '/img/order-img/17morning_lemon_bubble.png' },
+      { name: '月霜琥珀紅茶', price: { M: 90, L: 110 }, img: '/img/order-img/18moon_fog_amber_tea.png' },
+      { name: '星空琉璃', price: { M: 95, L: 115 }, img: '/img/order-img/19star_luminous.png' },
+      { name: '月泉白霜', price: { M: 90, L: 110 }, img: '/img/order-img/20moon_fog_white.png' },
+      { name: '曦光莓語', price: { M: 100, L: 120 }, img: '/img/order-img/21morning_berry.png' },
+      { name: '星澈雲泡', price: { M: 95, L: 115 }, img: '/img/order-img/22star_cloud_bubble.png' },
+      { name: '月霧雪頂', price: { M: 105, L: 125 }, img: '/img/order-img/23moon_fog_snow.png' },
+      { name: '曦光氣泡', price: { M: 90, L: 110 }, img: '/img/order-img/24morning_bubble.png' }
+    ];
+    /* 上面每個元素是物件，包含 name、price、img */
+    /* 可以用 JS 動態生成網頁商品列表或結帳功能 */
+
+    let cart = []; /* 創建一個空陣列 cart，用來儲存加入購物車的商品 */
+    const productDiv = document.getElementById('products');
+
+    products.forEach((p, i) => { /* 每個商品物件用 p 表示，索引用 i */
+      productDiv.innerHTML += `
+        <div class="card">
+          <img src="${p.img}"> <!-- ${p.img}這是 JavaScript 的模板字串語法。，${p.img} 會被替換成變數 p.img 的值。 -->
+          <div class="info">
+            <h4>${p.name}</h4>
+            <p>M: NT$ ${p.price.M} / L: NT$ ${p.price.L}</p>
+
+            <div class="form-group">
+              <label>尺寸：</label>
+              <select id="size-${i}">
+                <option value="M">M</option>
+                <option value="L">L</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>數量：</label>
+              <input type="number" id="qty-${i}" value="1" min="1"> <!-- 初始值 1，最小值 1-->
+            </div>
+
+            <div class="form-group">
+              <label>冰塊：</label>
+              <select id="ice-${i}">
+                <option>正常冰</option>
+                <option>少冰</option>
+                <option>去冰</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>甜度：</label>
+              <select id="sugar-${i}">
+                <option>正常糖</option>
+                <option>半糖</option>
+                <option>微糖</option>
+                <option>無糖</option>
+              </select>
+            </div>
+
+            <button onclick="addToCart(${i})">加入購物車</button>
+          </div>
+        </div>
+      `;
+    });
+
+    function addToCart(i) { /* i 是 商品在 products 陣列裡的索引值 */
+      const p = products[i];
+
+      const size = document.getElementById(`size-${i}`).value; /* 回傳的就是字串 "M" 或 "L" */
+      const qty = Math.max(1, parseInt(document.getElementById(`qty-${i}`).value, 10) || 1);
+      /* Math.max(最小允許值, 使用者輸入的數量)，確保數量「最少是 1」，不可能變成 0 或負數 */
+      /* parseInt(..., 10) → 把輸入框的值轉成整數，parseInt(字串, 進位制) */
+      /* || 1 → 如果使用者輸入空的、非數字（NaN），就用 1 */
+      const ice = document.getElementById(`ice-${i}`).value;
+      const sugar = document.getElementById(`sugar-${i}`).value;
+
+      const price = Number(p.price[size]); /* 依照「使用者選的尺寸」拿到「那杯飲料對應尺寸的單價」 */
+      /* Number() 保證它是數字型別 */
+      if (!Number.isFinite(price)) { /* 它只會回傳 布林值：true → 是正常、有限的數字、false → 不是 */
+        alert('價格資料有誤'); /* alert() 是瀏覽器內建函式，用來跳出訊息視窗給使用者看。 */
+        return;
+      }
+
+      cart.push({ /* 每次使用者按「加入購物車」，就會在 cart 陣列裡多一個物件： */
+        name: p.name,
+        size,
+        qty,
+        ice,
+        sugar,
+        price
+      });
+      /* 這個陣列就是購物車的「明細」，之後可以用來計算總金額或送到後端。 */
+
+      renderCart();
+      /* 呼叫 renderCart() 就會：清空 <ul id="cartList"> 內容、重新把 cart 陣列裡的每一個商品生成 HTML 顯示出來、計算總金額並更新 <span id="total"> */
+    }
+
+    function renderCart() {
+      const list = document.getElementById('cartList');
+      list.innerHTML = ''; /* 先清空裡面的內容，避免每次刷新都重複疊加 */
+      let total = 0;
+
+      cart.forEach((item, idx) => { /* idx = 商品在陣列中的索引，用來刪除商品時辨識哪一個。 */
+        const subtotal = item.price * item.qty;
+        total += subtotal;
+
+        list.innerHTML += `
+          <li>
+            <div>
+              <b>${item.name}</b>（${item.size}）x ${item.qty}<br>
+              <small>${item.ice} / ${item.sugar}</small> <!-- <small> 是 HTML 的標籤，用來把文字顯示得比一般文字小一點。 -->
+            </div>
+            <div>
+              NT$ ${subtotal}
+              <button onclick="removeItem(${idx})">刪除</button>
+            </div>
+          </li>
+        `;
+      });
+
+      document.getElementById('total').innerText = total; /* 把購物車目前的總金額顯示在頁面上 */
+    }
+
+    function removeItem(idx) {
+      cart.splice(idx, 1); /* splice() 是陣列的方法，用來刪除或替換陣列中的元素。 */
+      /* splice(start, deleteCount)，start = 從哪個索引開始、deleteCount = 刪除幾個元素 */
+      renderCart();
+    }
+
+    /* async 是 asynchronous（非同步） 的縮寫。它用在函式前面，表示這個函式裡面可能會有需要「等待」的操作，而不會阻塞程式執行。 */
+    async function submitOrder() {
+      const nameEl = document.getElementById('name');
+      const phoneEl = document.getElementById('phone');
+      const pickupEl = document.getElementById('pickup');
+
+      if (cart.length === 0) { alert('購物車是空的'); return }
+      /*只要名字、電話或取貨方式有任何一個欄位是空的（或名字/電話只有空白），就不送出訂單 */
+      if (!nameEl.value.trim() || !phoneEl.value.trim() || !pickupEl.value) { /* trim() → 去掉文字前後的空白（空格、換行、Tab 等） */
+        alert('請填寫完整資料');
+        return;
+      }
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      /* 這段程式碼是 計算購物車 cart 裡所有商品的總價 */
+      /* reduce() 是陣列方法，用來把陣列裡的元素「累加」成一個值 */
+
+
+      /* payload 是 要送給後端 API 的訂單資料 */
+      const payload = {
+        customer_name: nameEl.value.trim(),
+        phone: phoneEl.value.trim(),
+        pickup_method: pickupEl.value,
+        total,
+        cart: cart.map(item => ({
+          name: item.name,
+          price: item.price
+        })) /* 就是在 記錄這個客戶買了哪些商品（這裡是飲料）以及每個商品的價格，然後把這些資料放到 payload 裡送到後端 */
+      };
+
+      console.log('payload total =', payload.total);
+
+      /* await 表示「等待這個請求完成」，然後才繼續執行下一行 */
+      /* fetch() 是瀏覽器提供的 用來向後端 API 發送請求 的方法 */
+      /* '/api/order' → 後端接收訂單的 API 路徑 */
+      /* 'POST' → 用 POST 方法送資料，POST 用在「新增資料」或「送表單」 */
+      try {
+        const res = await fetch('/api/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload) /* JSON.stringify() → 把 JavaScript 物件轉成 JSON 字串，才能送給後端 */
+        });
+
+        /* 把訂單資料整理好 → payload
+
+          轉成 JSON 字串 → JSON.stringify(payload)
+
+          送給 /api/order → fetch
+
+          等伺服器回應 → await
+
+          回應存到 res → 可以再解析結果 */
+
+        const data = await res.json(); /* 把伺服器回傳的 JSON 資料解析成 JavaScript 物件，然後存進變數 data */
+        alert(`訂單新增成功！訂單編號：${data.order_id}`);
+
+        cart = [];
+        renderCart();
+        nameEl.value = '';
+        phoneEl.value = '';
+        pickupEl.value = '';
+
+      } catch (err) {
+        console.error(err);
+        alert('送出失敗：無法連線到伺服器');
+      }
+    }
+  </script>
+</body>
+<script src="js/order.js"></script>
+</html>

@@ -1,0 +1,159 @@
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: #fcf8f1;
+  background-size: 20px 20px; /* 設定「背景圖案」的大小 */
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(145, 63, 63, 0.02) 8px, transparent 7px), repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.02) 6px, transparent 7px);
+  /* 上面這行會"畫一個重複的線性漸層"，前 5px 都是透明，在第 8px 的位置畫一條超淡的紅棕色線之後又會回到透明 */
+}
+
+li {
+  list-style: none;
+}
+
+.navbar {
+  display: flex; /* 把 navbar 變成 Flex 容器，方便後面調整水平及垂直位置 */
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #f3e9d2;
+  color: #fff;
+  position: fixed;
+  padding: 10px 20px; /* 為了讓內容不要貼邊，看起來比較舒服 */
+  top: 0;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-left: -39px;
+  z-index: 10;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 40px; /* Flex 子項目之間的距離 */
+}
+
+.nav-links a {
+  color: #7a5e3c;
+  font-size: 16px;
+  position: relative; /* 建立定位基準點，目的是為了讓之後的子元素以這個作為參考點定位 */
+  padding-bottom: 6px;
+  text-decoration: none;
+}
+
+.nav-links a::after {
+  /* 這邊的"::after"偽元素會在每個nav-links裡面的超連結後面自動生成一個空盒子 */
+  content: "";
+  position: absolute; /* 它會以最近的 position: relative 父元素為基準 */
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: #c6a663;
+  transition: 0.3s; /* 當任何屬性改變時會用 0.3 秒慢慢變化，不會瞬間跳出來 */
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column; /* 當這個元素顯示成flex時，裡面的子元素會垂直排列，形成「三條橫線」的漢堡圖示效果 */
+  cursor: pointer;
+}
+
+.hamburger span {
+  background-color: #B08968;
+  width: 25px;
+  height: 3px;
+  margin: 3px 0;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 981px) { /* 當螢幕寬度小於或等於981px時才會套用裡面的 CSS。 */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background-color: #F9EFD9;
+    width: 200px;
+    border-radius: 8px;
+    position: absolute; /* 選單以 絕對定位，相對於最近的定位父元素（如果沒有，就相對於 <body> 或 viewport） */
+    top: 40px;
+    right: 20px;
+    padding: 20px 20px;
+  }
+
+  .nav-links.active {
+    display: flex;
+    width: 40px;
+  }
+
+  .submenu {
+    position: static;
+   /* 讓子選單在手機版時直接跟在父選項下面顯示，而不是浮動「往外跑」。 absolute → 子選單像「懸浮的浮板」，漂浮在父選單旁邊 static → 子選單像「正常的文字段落」，跟著父選單自然排列*/
+    box-shadow: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+.faq-header {
+  margin-top: 120px;
+  text-align: center;
+}
+
+.faq-header h1 {
+  font-size: 36px;
+  color: #7a5230;
+}
+
+.faq-header p {
+  margin-top: 10px;
+  color: #a9744d;
+}
+
+.faq-container {
+  width: 80%;
+  max-width: 900px;
+  margin: 60px auto;
+}
+
+.faq-group {
+  margin-bottom: 50px;
+}
+
+.faq-group h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  border-left: 6px solid #c6a663; /* 標題左邊加一條 6px 寬的實線邊框，顏色是淡棕金色，用於增加文章段落標題的裝飾效果 */
+  padding-left: 10px;
+}
+
+details {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+
+summary {
+  font-weight: bold;
+  color: #7a5e3c;
+}
+
+details p {
+  margin-top: 12px;
+  line-height: 1.7;
+}
+
+.footer {
+  text-align: center;
+  padding: 30px 0;
+  background: #f3e9d2;
+  color: #7a5e3c;
+}

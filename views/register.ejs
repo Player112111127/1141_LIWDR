@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title> speed</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧋</text></svg>">
+  <link rel="stylesheet" href="css/register.css">
+
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="/homepage">首頁</a></li>
+        <li><a href="/menu">菜單</a></li>
+        <li><a href="/order">線上訂購</a></li>
+        <li><a href="/storepage">門市據點</a></li>
+        <li><a href="/brandStory" class="active">品牌故事</a></li>
+        <li><a href="/frequentlyaskedquestions">常見問題</a></li>
+
+        <% if (user) { %>
+          <li><a onclick="return false;">歡迎 <%= user.username %></a></li>
+          <li><a href="/logout">登出</a></li>
+          <% } else { %>
+            <li><a href="/login">登入</a></li>
+            <% } %>
+      </ul>
+
+      <div class="hamburger" id="hamburger" aria-label="menu" role="button" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page">
+    <div class="wrap">
+      <div class="card">
+        <div class="header-card">
+          <div class="brand">
+            <div class="logo" aria-hidden="true"></div>
+            <div>
+              <h2>會員註冊</h2>
+              <p class="sub">建立帳號後即可登入使用線上訂購</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="content">
+          <form id="registerForm">
+            <div class="grid">
+              <div>
+                <label>帳號</label>
+                <input class="input" name="username" autocomplete="username" required />
+              </div>
+              <div>
+                <label>Email</label>
+                <input class="input" name="email" type="email" autocomplete="email" placeholder="選填" />
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <label>密碼</label>
+              <input class="input" name="password" type="password" autocomplete="new-password" required />
+            </div>
+
+            <button class="btn" id="regBtn" type="submit">註冊</button>
+
+            <div id="toast" class="toast" role="alert"></div>
+          </form>
+
+          <p class="hint">已有帳號？ <a href="/login">前往登入</a></p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    
+    // ===== register =====
+    const form = document.getElementById("registerForm");
+    const btn = document.getElementById("regBtn");
+    const toast = document.getElementById("toast");
+
+    function showToast(msg, type){
+      toast.textContent = msg || "";
+      toast.className = "toast show " + (type || "");
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      btn.disabled = true;
+      btn.textContent = "註冊中...";
+
+      const data = Object.fromEntries(new FormData(e.target).entries());
+
+      try {
+        const r = await fetch("/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        const j = await r.json();
+
+        if (j.message) {
+          showToast(j.message || "註冊成功！即將前往登入頁…", "ok");
+          setTimeout(() => location.href = "/login", 700);
+        } else {
+          showToast(j.error || "註冊失敗，請再試一次", "bad");
+        }
+      } catch (err) {
+        showToast("連線失敗，請稍後再試", "bad");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "註冊";
+      }
+    });
+  </script>
+</body>
+</html>

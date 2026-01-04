@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> speed</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧋</text></svg>">
+  <link rel="stylesheet" href="css/brandStory.css">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="/homepage">首頁</a></li>
+        <li><a href="/menu">菜單</a></li>
+        <li><a href="/order">線上訂購</a></li>
+        <li><a href="/storepage">門市據點</a></li>
+        <li><a href="/brandStory" class="active">品牌故事</a></li>
+        <li><a href="/frequentlyaskedquestions">常見問題</a></li>
+
+        <% if (user) { %>
+          <li><a onclick="return false;">歡迎 <%= user.username %></a></li>
+          <li><a href="/logout">登出</a></li>
+          <% } else { %>
+            <li><a href="/login">登入</a></li>
+            <% } %>
+      </ul>
+
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+
+  <div class="nav-spacer"></div>
+
+  <section class="banner">
+    <h1>品牌故事</h1>
+  </section>
+
+  <div class="story-container">
+
+    <section class="story-section" id="brand-idea">
+      <h2>品牌理念</h2>
+      <p>
+        我們相信，一杯飲料不只是解渴的選擇，而是陪伴生活每個片刻的溫柔存在。
+      </p>
+      <p>
+        在快速流動的日常中，我們希望用一杯剛剛好的味道，讓人停下腳步，感受片刻的安心與放鬆。
+      </p>
+      <p>
+        從原料的來源、製作的流程，到交到你手中的那一刻，我們堅持簡單、透明與誠實，
+        不多一分負擔，只留下純粹的風味與值得信賴的品質。
+      </p>
+      <p>
+        這不只是一杯飲料，而是一種對生活的態度——
+        在平凡中，選擇用心。
+      </p>
+    </section>
+
+    <section class="story-section">
+      <h2>創辦人故事</h2>
+      <div class="founder">
+        <img src="/img/BBS.png" alt="創辦人照片">
+        <div>
+          <p>創辦人成長於街角飲料店，看著飲品成為人們日常的陪伴。</p>
+          <p>希望打造一個值得信賴、每天都想再來一杯的品牌。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-section">
+      <h2>品牌願景</h2>
+      <div class="vision-grid">
+        <div class="vision-card">
+          <h3>品質堅持</h3>
+          <p>嚴選原料，用心製作</p>
+        </div>
+        <div class="vision-card">
+          <h3>在地溫度</h3>
+          <p>成為城市日常的一部分</p>
+        </div>
+        <div class="vision-card">
+          <h3>永續經營</h3>
+          <p>兼顧環保與未來</p>
+        </div>
+      </div>
+    </section>
+
+
+  </div>
+
+  <script src="js/brandStory.js"></script> <!-- 引入js -->
+</body>
+
+</html>

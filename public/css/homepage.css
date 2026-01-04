@@ -1,0 +1,464 @@
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: #fcf8f1;
+  background-size: 20px 20px; /* 設定「背景圖案」的大小 */
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(145, 63, 63, 0.02) 8px, transparent 7px), repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.02) 6px, transparent 7px);
+  /* 上面這行會"畫一個重複的線性漸層"，前 5px 都是透明，在第 8px 的位置畫一條超淡的紅棕色線之後又會回到透明 */
+}
+
+li {
+  list-style: none;
+}
+
+.navbar {
+  display: flex; /* 把 navbar 變成 Flex 容器，方便後面調整水平及垂直位置 */
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #f3e9d2;
+  color: #fff;
+  position: fixed;
+  padding: 10px 20px; /* 為了讓內容不要貼邊，看起來比較舒服 */
+  top: 0;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-left: -39px;
+  z-index: 10;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 40px; /* Flex 子項目之間的距離 */
+}
+
+.nav-links a {
+  color: #7a5e3c;
+  font-size: 16px;
+  position: relative; /* 建立定位基準點，目的是為了讓之後的子元素以這個作為參考點定位 */
+  padding-bottom: 6px;
+  text-decoration: none;
+}
+
+.nav-links a::after {
+  /* 這邊的"::after"偽元素會在每個nav-links裡面的超連結後面自動生成一個空盒子 */
+  content: "";
+  position: absolute; /* 它會以最近的 position: relative 父元素為基準 */
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: #c6a663;
+  transition: 0.3s; /* 當任何屬性改變時會用 0.3 秒慢慢變化，不會瞬間跳出來 */
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column; /* 當這個元素顯示成flex時，裡面的子元素會垂直排列，形成「三條橫線」的漢堡圖示效果 */
+  cursor: pointer;
+}
+
+.hamburger span {
+  background-color: #B08968;
+  width: 25px;
+  height: 3px;
+  margin: 3px 0;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 981px) { /* 當螢幕寬度小於或等於981px時才會套用裡面的 CSS。 */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background-color: #F9EFD9;
+    width: 200px;
+    border-radius: 8px;
+    position: absolute; /* 選單以 絕對定位，相對於最近的定位父元素（如果沒有，就相對於 <body> 或 viewport） */
+    top: 40px;
+    right: 20px;
+    padding: 20px 20px;
+  }
+
+  .nav-links.active {
+    display: flex;
+    width: 40px;
+  }
+
+  .submenu {
+    position: static;
+    /* 讓子選單在手機版時直接跟在父選項下面顯示，而不是浮動「往外跑」。 absolute → 子選單像「懸浮的浮板」，漂浮在父選單旁邊 static → 子選單像「正常的文字段落」，跟著父選單自然排列*/
+    box-shadow: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+svg {
+  background: #fcf8f1;
+  background-size: 20px 20px;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(145, 63, 63, 0.02) 8px, transparent 7px), repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.02) 6px, transparent 7px);
+}
+
+.concept-slider-wrapper {
+  position: relative;
+  width: 900px;
+  height: 400px;
+  overflow: visible;
+  font-family: Arial, sans-serif;
+  margin: 0 auto;
+  padding: 60px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.concept-slider {
+  position: relative;
+  width: 900px;
+  height: 400px;
+  background: linear-gradient(45deg, #fff, #f9f0db);
+  border: 1px solid #d4b36a;
+  border-radius: 450px 450px 0 0;
+  /* 按照左上、右上、右下、左下的順序設定圓角大小。*/
+  padding: 0 60px 40px 60px;
+  overflow: hidden;
+  border-bottom: none;
+  user-select: none;
+}
+
+.slide-container {
+  position: relative;
+  width: 900px;
+  height: 400px;
+  user-select: none;
+}
+
+.slide {
+  position: absolute;
+  /* 這個元素會相對於最近一個有定位的祖先元素來定位。*/
+  top: 30%;
+  bottom: 0;
+  width: 700px;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  pointer-events: none;
+}
+
+.slide.active {
+  pointer-events: auto;
+}
+
+.slide-image {
+  width: 250px;
+  height: 250px;
+  background-size: cover;
+  /* 讓背景圖剛好覆蓋整個容器（元素），不留空白，並且維持原本的比例（不變形）。 */
+  background-position: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  /* 當你使用 display: flex; 時，容器裡的子元素會自動試著擠在一起，如果寬度不夠，它們會縮小以避免超出。 flex-shrink 代表這個元素在空間不足時「不要縮小」，保持它原本的寬度或高度。*/
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.slide-text {
+  max-width: 430px;
+}
+
+.slide-text h3 {
+  margin: 0 0 12px 0;
+  font-size: 2rem;
+  color: #5a4520;
+  font-weight: 700;
+}
+
+.slide-text p {
+  font-size: 1.1rem;
+  color: #7f6a2f;
+  line-height: 1.6;
+}
+
+.nav-buttons {
+  position: absolute;
+  top: 50%;
+  left: -70px;
+  width: 1040px;
+  display: flex;
+  justify-content: space-between;
+  /* 把第一個元素推到最左邊，最後一個推到最右邊，中間的元素平均分散間距。*/
+  transform: translateY(-50%);
+  pointer-events: auto;
+}
+
+.nav-buttons button {
+  background: #d4b36a;
+  color: white;
+  border: none;
+  font-size: 1.8rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s;
+  user-select: none;
+}
+
+.nav-buttons button:hover {
+  background: #b89a4a;
+}
+
+h1 {
+  text-align: center;
+  font-size: 52px;
+}
+
+#Joint_Activities {
+  position: absolute;
+  margin-top: 70px;
+}
+
+.slider {
+  font-family: Arial, sans-serif;
+  padding: 100px 0;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+.slides {
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+  gap: 200px;
+  padding: 0 50px;
+}
+
+.slide2-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 425px;
+}
+
+.slide2 {
+  width: 100%;
+  height: 220px;
+  background: rgba(247, 226, 209, 0.5);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide2 img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  /* 整張圖片完整顯示，而且會等比例縮放，讓它剛好塞進容器裡，但不會裁切圖片。 */
+}
+
+.caption {
+  margin-top: 52px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+}
+
+.footer {
+  width: 100vw;
+  margin-top: -60px;
+  font-family: 'Noto Sans TC', sans-serif;
+  text-align: center;
+  padding: 40px 20px;
+  color: #7a5e3c;
+  background-color: #f3e9d2;
+  font-weight: bold;
+}
+
+
+
+.footer__links a:hover {
+  color: #f3c9a1;
+}
+
+.footer__information {
+  margin-bottom: 20px;
+}
+
+.footer__info-item {
+  display: block;
+  /* 區塊元素會獨佔一整行，讓每一個 .footer__info-item 項目垂直排列。 */
+  font-size: 16px;
+  margin-bottom: 15px;
+  text-decoration: none;
+  color: #7a5e3c;
+}
+
+.footer__info-item i {
+  margin-right: 18px;
+}
+
+.footer__social {
+  margin-top: 15px;
+}
+
+.footer__social a {
+  margin: 0 20px;
+  color: #f3c9a1;
+  font-size: 20px;
+  transition: color 0.3s ease;
+  text-decoration: none;
+  /* 你的 Facebook、LINE 等 icon 旁邊會出現「小底線」，很可能是因為 <a> 標籤預設會有 text-decoration: underline，而這個底線不是加在 <i> 圖示本身，而是加在 <a> 標籤內的空白部分或文字上。 */
+}
+
+.footer__social a:hover {
+  color: #d26868;
+}
+
+.copyright {
+  font-size: 13px;
+  color: #999;
+  line-height: 1.6;
+  margin-top: 35px;
+}
+
+.wave {
+  background-image: url(../img/wave.png);
+  background-size: cover;
+  /* 讓背景圖片「等比例」放大或縮小，以完全覆蓋元素的整個背景區域。 */
+  animation: wave 5s linear infinite;
+  width: 100%;
+  height: 100px;
+  left: 0;
+  transform: translateY(-43%);
+  position: relative;
+}
+
+@keyframes wave {
+  0% {
+    background-position-x: 1000px;
+  }
+
+  100% {
+    background-position-x: 0px;
+  }
+}
+
+.node {
+  position: absolute;
+  z-index: 2;
+  text-align: center;
+  user-select: none;
+  /* 不允許使用者選取這個元素的內容。 */
+  width: 120px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #7a5230;
+  transform: translate(100%, -50%);
+}
+
+.dot {
+  width: 18px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 3px 6px rgba(255, 255, 255, 0.8), 0 2px 6px rgba(0, 0, 0, 0.1);
+  ;
+  border-radius: 50%;
+  transition: transform 0.3s ease-in-out;
+  margin: 0 auto;
+  border: 2px solid #d6b37a;
+  backdrop-filter: blur(3px);
+  /* 對 這個元素「背後」的內容 套用一個模糊濾鏡，模糊程度為 3px。 */
+  margin: 0 auto;
+}
+
+.label {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.node:hover .dot {
+  transform: scale(1.3);
+  box-shadow: inset 0 5px 10px rgba(255, 255, 255, 0.9), 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+svg path {
+  stroke-linejoin: round;
+  /* 表示：把線條交接處的角變成圓滑的曲線，看起來比較柔和、不銳利。 */
+  stroke-linecap: round;
+  /* 表示：線條的頭尾會變成圓形的端點，看起來比較平滑。 */
+}
+
+#floating-droplets {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  overflow: visible;
+}
+
+.droplet {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 3px 6px rgba(255, 255, 255, 0.9), 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border: 1.5px solid rgba(214, 179, 122, 0.8);
+  opacity: 0.9;
+  backdrop-filter: blur(3px);
+  animation: floaty 4s ease-in-out infinite alternate;
+}
+
+@keyframes floaty {
+  0% {
+    transform: translateY(0px);
+  }
+
+  100% {
+    transform: translateY(-6px);
+  }
+}
+
+#tooltip {
+  position: absolute;
+  background: #a9744d;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 10;
+}
+
+
+#tooltip.visible {
+  opacity: 1;
+  transform: translateX(5%) translateY(0);
+}
+
+.container,
+svg {
+  margin: 0 auto;
+}

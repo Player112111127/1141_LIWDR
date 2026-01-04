@@ -1,0 +1,780 @@
+body {
+  margin: 0px;
+  overflow-x: hidden;
+  background: #fcf8f1;
+  background-size: 20px 20px; /* 設定「背景圖案」的大小 */
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(145, 63, 63, 0.02) 8px, transparent 7px), repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.02) 6px, transparent 7px);
+  /* 上面這行會"畫一個重複的線性漸層"，前 5px 都是透明，在第 8px 的位置畫一條超淡的紅棕色線之後又會回到透明 */
+}
+
+li {
+  list-style: none;
+}
+
+.navbar {
+  display: flex; /* 把 navbar 變成 Flex 容器，方便後面調整水平及垂直位置 */
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #f3e9d2;
+  color: #fff;
+  position: fixed;
+  padding: 10px 20px; /* 為了讓內容不要貼邊，看起來比較舒服 */
+  top: 0;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-left: -39px;
+  z-index: 10;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 40px; /* Flex 子項目之間的距離 */
+}
+
+.nav-links a {
+  color: #7a5e3c;
+  font-size: 16px;
+  position: relative; /* 建立定位基準點，目的是為了讓之後的子元素以這個作為參考點定位 */
+  padding-bottom: 6px;
+  text-decoration: none;
+}
+
+.nav-links a::after {
+  /* 這邊的"::after"偽元素會在每個nav-links裡面的超連結後面自動生成一個空盒子 */
+  content: "";
+  position: absolute; /* 它會以最近的 position: relative 父元素為基準 */
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: #c6a663;
+  transition: 0.3s; /* 當任何屬性改變時會用 0.3 秒慢慢變化，不會瞬間跳出來 */
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column; /* 當這個元素顯示成flex時，裡面的子元素會垂直排列，形成「三條橫線」的漢堡圖示效果 */
+  cursor: pointer;
+}
+
+.hamburger span {
+  background-color: #B08968;
+  width: 25px;
+  height: 3px;
+  margin: 3px 0;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 981px) { /* 當螢幕寬度小於或等於981px時才會套用裡面的 CSS。 */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background-color: #F9EFD9;
+    width: 200px;
+    border-radius: 8px;
+    position: absolute; /* 選單以 絕對定位，相對於最近的定位父元素（如果沒有，就相對於 <body> 或 viewport） */
+    top: 40px;
+    right: 20px;
+    padding: 20px 20px;
+  }
+
+  .nav-links.active {
+    display: flex;
+    width: 40px;
+  }
+
+  .submenu {
+    position: static;
+    /* 讓子選單在手機版時直接跟在父選項下面顯示，而不是浮動「往外跑」。 absolute → 子選單像「懸浮的浮板」，漂浮在父選單旁邊 static → 子選單像「正常的文字段落」，跟著父選單自然排列*/
+    box-shadow: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+#main-content-wrapper {
+  position: relative;
+  width: 800px;
+  height: 2600px;
+  margin: 0 auto;
+  transform-origin: top center;
+  z-index: 1;
+  transform: scale(1);
+}
+
+
+@media (max-width: 1200px) {
+  #main-content-wrapper {
+    transform: scale(calc(100vw / 800));
+    /* 若視窗寬度 100vw = 400px → scale(400/800) = 0.5，內容會縮到原來的 50%。 */
+  }
+
+  /* calculate 的縮寫👉 計算 */
+}
+
+
+svg {
+  width: 140%;
+  height: auto;
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.background {
+  fill: none;
+  stroke: #C99B6B;
+  stroke-width: 2;
+  stroke-dasharray: 4360;
+  stroke-dashoffset: 4360;
+  animation: draw 0.5s linear forwards;
+}
+
+.line {
+  fill: none;
+  stroke: #C99B6B;
+  stroke-width: 2;
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
+  animation: draw-outline 2s linear forwards;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-outline {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.line:nth-child(1) {
+  animation-delay: 0s;
+}
+
+/* 用來選擇「父元素裡第 n 個」的 CSS 選擇器。 */
+.line:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+.line:nth-child(3) {
+  animation-delay: 0.8s;
+}
+
+.line:nth-child(4) {
+  animation-delay: 1s;
+}
+
+.line:nth-child(5) {
+  animation-delay: 1.2s;
+}
+
+.line:nth-child(6) {
+  animation-delay: 1.4s;
+}
+
+.line:nth-child(7) {
+  animation-delay: 1.6s;
+}
+
+.line:nth-child(8) {
+  animation-delay: 1.8s;
+}
+
+.line:nth-child(9) {
+  animation-delay: 2.0s;
+}
+
+.line:nth-child(10) {
+  animation-delay: 2.2s;
+}
+
+.line:nth-child(11) {
+  animation-delay: 2.4s;
+}
+
+.line:nth-child(12) {
+  animation-delay: 2.6s;
+}
+
+.line:nth-child(13) {
+  animation-delay: 2.8s;
+}
+
+.line:nth-child(14) {
+  animation-delay: 3s;
+}
+
+.line:nth-child(15) {
+  animation-delay: 3.2s;
+}
+
+.line:nth-child(16) {
+  animation-delay: 3.4s;
+}
+
+.line:nth-child(17) {
+  animation-delay: 3.6s;
+}
+
+.line:nth-child(18) {
+  animation-delay: 3.8s;
+}
+
+.line:nth-child(19) {
+  animation-delay: 4s;
+}
+
+.line:nth-child(20) {
+  animation-delay: 4.2s;
+}
+
+.line:nth-child(21) {
+  animation-delay: 4.4s;
+}
+
+.line:nth-child(22) {
+  animation-delay: 4.6s;
+}
+
+
+#princess,
+#hand_shaken_drinks,
+#animal,
+#girl_and_flower,
+#coffee_aroma,
+#Pearl_milk_tea,
+#teapot,
+#girl,
+#download {
+  position: absolute;
+  width: 224px;
+  height: auto;
+  opacity: 0;
+  transition: opacity 0.5s, transform 0.3s;
+  border-radius: 15px;
+  box-shadow: none;
+  border: none;
+  transform: translate(-50%, -50%);
+  /* top: 50% 會把圖片左上角放在畫面中心
+
+translate(-50%, -50%) 再把圖片往左上移自己的 50%
+
+兩個效果加起來 → 圖片正中央剛好在畫面中心 */
+}
+
+.dash-box,
+.dash-box2 {
+  position: absolute;
+  /* 不受其他元素排版影響。 */
+  width: 240px;
+  height: 200px;
+  border: 2px dashed #C99B6B;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.5s;
+  transform: translate(-50%, -50%);
+  /* 讓框的中心點對齊位置中心 */
+}
+
+#menu-text,
+#menu-text2,
+#menu-text3,
+#menu-text4,
+#menu-text5,
+#menu-text6,
+#menu-text7,
+#menu-text8,
+#info-block,
+#features,
+#features-2 {
+  position: absolute;
+  width: 320px;
+  font-size: 23px;
+  font-family: Arial, Helvetica, sans-serif;
+  opacity: 0;
+  transition: opacity 0.5s, transform 0.3s;
+  font-weight: bold;
+  line-height: 1.2;
+  text-align: left;
+  transform: translate(-50%, -50%);
+}
+
+#menu-text:hover,
+#menu-text2:hover,
+#menu-text3:hover,
+#menu-text4:hover,
+#menu-text5:hover,
+#menu-text6:hover,
+#menu-text7:hover,
+#menu-text8:hover {
+  cursor: pointer;
+}
+
+#menu-text span,
+#menu-text2 span,
+#menu-text3 span,
+#menu-text4 span,
+#menu-text5 span,
+#menu-text6 span,
+#menu-text7 span,
+#menu-text8 span {
+  color: #666;
+  font-size: 0.5em;
+  display: block;
+  margin-top: 3px;
+}
+
+.tea1 {
+  color: #F5C2D0;
+}
+
+.tea1:hover {
+  color: #E48AA0;
+}
+
+.tea2 {
+  color: #F3D27A;
+}
+
+.tea2:hover {
+  color: #D9B04C;
+}
+
+.tea3 {
+  color: #F5E5C0;
+}
+
+.tea3:hover {
+  color: #E0C88A;
+}
+
+.tea4 {
+  color: #CFE6C8;
+}
+
+.tea4:hover {
+  color: #7BA25C;
+}
+
+.tea5 {
+  color: #F1D6B1;
+}
+
+.tea5:hover {
+  color: #B87B45;
+}
+
+.tea6 {
+  color: #FFDAB9;
+}
+
+.tea6:hover {
+  color: #FF9E66;
+}
+
+.tea7 {
+  color: #B0E0E6;
+}
+
+.tea7:hover {
+  color: #66B2CC;
+}
+
+.tea8 {
+  color: #D8BFD8;
+}
+
+.tea8:hover {
+  color: #A569BD;
+}
+
+.tea9 {
+  color: #E0F7FA;
+}
+
+.tea9:hover {
+  color: #81D4FA;
+}
+
+.tea10 {
+  color: #E6D6F5;
+}
+
+.tea10:hover {
+  color: #BFA2E2;
+}
+
+.tea11 {
+  color: #FFD1DC;
+}
+
+.tea11:hover {
+  color: #FF99AA;
+}
+
+.tea12 {
+  color: #F6E6B4;
+}
+
+.tea12:hover {
+  color: #E3C86E;
+}
+
+.tea13 {
+  color: #D1A78B;
+}
+
+.tea13:hover {
+  color: #6F4F37;
+}
+
+.tea14 {
+  color: #A9C2D8;
+}
+
+.tea14:hover {
+  color: #4B6F93;
+}
+
+.tea15 {
+  color: #D2A68D;
+}
+
+.tea15:hover {
+  color: #6F4F28;
+}
+
+.tea16 {
+  color: #F3E8C6;
+}
+
+.tea16:hover {
+  color: #D6C79A;
+}
+
+.tea17 {
+  color: #C8F4D6;
+}
+
+.tea17:hover {
+  color: #6CC9A8;
+}
+
+.tea18 {
+  color: #E7C3A1;
+}
+
+.tea18:hover {
+  color: #B67F4D;
+}
+
+.tea19 {
+  color: #C9D9FF;
+}
+
+.tea19:hover {
+  color: #6A8CD6;
+}
+
+.tea20 {
+  color: #D8F4E4;
+}
+
+.tea20:hover {
+  color: #66C1A1;
+}
+
+.tea21 {
+  color: #F8C9D4;
+}
+
+.tea21:hover {
+  color: #D96A7F;
+}
+
+.tea22 {
+  color: #C8D8FF;
+}
+
+.tea22:hover {
+  color: #6A8BCF;
+}
+
+.tea23 {
+  color: #F3DDEB;
+}
+
+.tea23:hover {
+  color: #C47FB4;
+}
+
+.tea24 {
+  color: #FFE4C8;
+}
+
+.tea24:hover {
+  color: #FF9F52;
+}
+
+#princess-box {
+  top: calc(217 / 2600 * 100%);
+  left: calc(200 / 800 * 100%);
+  transform: translateX(-175px) translateY(-88px);
+
+  /* (元素座標 ÷ 設計稿大小) × 100% */
+
+  /* 當畫面縮小／變大時
+🔸 元素位置會跑掉
+🔸 和設計稿位置不再對齊
+
+因此必須把位置換算成比例，讓它隨畫面縮放。
+就是把設計稿的「絕對位置」轉為「相對百分比位置」。 */
+
+  /* 217：元素在 原始設計稿（例如 Figma、Photoshop）中的 Y 座標位置 2600：設計稿的 整體高度 100%：代表要換算成 相對於容器高度的百分比位置 */
+}
+
+#princess {
+  top: calc(217 / 2600 * 100%);
+  left: calc(200 / 800 * 100%);
+  transform: translateX(-165px) translateY(-78px);
+}
+
+#menu-text {
+  top: calc(237 / 2600 * 100%);
+  left: calc(600 / 800 * 100%);
+  transform: translateX(-82px) translateY(-118px);
+}
+
+#hand_shaken_drinks {
+  top: calc(477 / 2600 * 100%);
+  left: calc(600 / 800 * 100%);
+  transform: translateX(-99px) translateY(-71px);
+}
+
+#hand_shaken_drinks_box {
+  top: calc(477 / 2600 * 100%);
+  left: calc(600 / 800 * 100%);
+  transform: translateX(-91px) translateY(-104px);
+}
+
+#menu-text2 {
+  top: calc(497 / 2600 * 100%);
+  left: calc(200 / 800 * 100%);
+  transform: translateX(-159px) translateY(-141px);
+}
+
+#animal {
+  top: calc(757 / 2600 * 100%);
+  left: calc(200 / 800 * 100%);
+  transform: translateX(-169px) translateY(-124px);
+}
+
+#animal-box {
+  top: calc(757 / 2600 * 100%);
+  left: calc(200 / 800 * 100%);
+  transform: translateX(-166px) translateY(-146px);
+}
+
+#menu-text3 {
+  top: calc(777 / 2600 * 100%);
+  left: calc(600 / 800 * 100%);
+  transform: translateX(-85px) translateY(-181px);
+}
+
+#girl_and_flower {
+  top: calc(1017 / 2600 * 100%);
+  left: calc(600 / 800 * 100%);
+  transform: translateX(-83px) translateY(-142px);
+}
+
+#girl_and_flower_box {
+  top: calc(1017 / 2600 * 100%);
+  left: calc(600 / 800 * 100%);
+  transform: translateX(-85px) translateY(-168px);
+}
+
+#menu-text4 {
+  top: calc(1037 / 2600 * 100%);
+  left: calc(200 / 800 * 100%);
+  transform: translateX(-157px) translateY(-202px);
+}
+
+#coffee_aroma {
+  top: calc(1277 / 2600 * 100%);
+  left: calc(200 / 800 * 100%);
+  transform: translateX(-166px) translateY(-202px);
+}
+
+#coffee_aroma_box {
+  top: calc(1277 / 2600 * 100%);
+  left: calc(200 / 800 * 100%);
+  transform: translateX(-161px) translateY(-185px);
+}
+
+#menu-text5 {
+  top: calc(1297 / 2600 * 100%);
+  left: calc(600 / 800 * 100%);
+  transform: translateX(-83px) translateY(-220px);
+}
+
+#Pearl_milk_tea {
+  top: calc(1537 / 2600 * 100%);
+  left: calc(600 / 800 * 100%);
+  transform: translateX(-83px) translateY(-220px);
+}
+
+#Pearl_milk_tea_box {
+  top: calc(1537 / 2600 * 100%);
+  left: calc(600 / 800 * 100%);
+  transform: translateX(-83px) translateY(-206px);
+}
+
+#menu-text6 {
+  top: calc(1557 / 2600 * 100%);
+  left: calc(200 / 800 * 100%);
+  transform: translateX(-162px) translateY(-239px);
+}
+
+#teapot {
+  top: calc(1797 / 2600 * 100%);
+  left: calc(200 / 800 * 100%);
+  transform: translateX(-162px) translateY(-239px);
+}
+
+#teapot_box {
+  top: calc(1797 / 2600 * 100%);
+  left: calc(200 / 800 * 100%);
+  transform: translateX(-162px) translateY(-224px);
+}
+
+#menu-text7 {
+  top: calc(1817 / 2600 * 100%);
+  left: calc(600 / 800 * 100%);
+  transform: translateX(-82px) translateY(-256px);
+}
+
+#girl {
+  top: calc(2057 / 2600 * 100%);
+  left: calc(600 / 800 * 100%);
+  transform: translateX(-82px) translateY(-256px);
+}
+
+#girl_box {
+  top: calc(2057 / 2600 * 100%);
+  left: calc(600 / 800 * 100%);
+  transform: translateX(-82px) translateY(-244px);
+}
+
+#menu-text8 {
+  top: calc(2077 / 2600 * 100%);
+  left: calc(200 / 800 * 100%);
+  transform: translateX(-159px) translateY(-281px);
+}
+
+#info-block {
+  top: calc(2500 / 2600 * 100%);
+  left: calc(40 / 800 * 100%);
+  width: 400px;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: bold;
+  color: #b07a29;
+  transform: translateX(7px) translateY(-460px);
+}
+
+#info-block .addon-name,
+#info-block .addon-price {
+  font-size: 1.1em;
+}
+
+#info-block .small-note {
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+#download {
+  top: calc(2580 / 2600 * 100%);
+  left: calc(632 / 800 * 100%);
+  width: 259px;
+  transform: translateX(-117px) translateY(-616px);
+}
+
+#download:hover {
+  cursor: pointer;
+}
+
+#download_box {
+  top: calc(2580 / 2600 * 100%);
+  left: calc(632 / 800 * 100%);
+  width: 252px;
+  height: 200px;
+  transform: translateX(-117px) translateY(-529px);
+}
+
+#features {
+  top: calc(2300 / 2600 * 100%);
+  left: calc(-30 / 600 * 100%);
+  width: 420px;
+  font-size: 25px;
+  line-height: 1.4;
+  color: #C8A27E;
+  text-align: left;
+  transform: translateX(15px) translateY(12px);
+}
+
+.subtitle {
+  display: inline-block;
+  transform: translateX(90px);
+  line-height: 3;
+
+  /* 
+  span 是 inline（行內元素），沒有自己的盒子，
+  transform 在 inline 上不一定會產生位移效果。
+  將它改成 inline-block 之後就會變成可轉換元素（有 box），
+  transform: translateX() 才能正常運作。
+  */
+
+}
+
+.eco-subtitle {
+  display: inline-block;
+  transform: translateX(95px);
+  line-height: 3;
+}
+
+.btn {
+  transform: translateX(102px) translateY(-11px);
+  background: #c6966a;
+  color: white;
+  font-weight: bold;
+  width: 112px;
+  height: 26px;
+  padding: 21px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#features-2 {
+  top: calc(2300 / 2600 * 100%);
+  left: calc(400 / 800 * 100%);
+  width: 420px;
+  font-size: 25px;
+  line-height: 1.4;
+  color: #C8A27E;
+  text-align: left;
+  transform: translateX(44px) translateY(12px);
+}
